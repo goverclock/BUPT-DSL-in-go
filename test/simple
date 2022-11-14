@@ -1,0 +1,8 @@
+var {
+	username string	
+	balance float64
+}
+
+main {
+	print "请问您有什么问题?"
+}
