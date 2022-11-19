@@ -1,8 +1,51 @@
-var {
+var (
+	in string
 	username string	
 	balance float64
+)
+
+begin {
+	timeout(10, silence)
+	say("请问您有什么问题?")
+	input(in)
+	switch in {
+		"你好" goto hello
+		"余额" goto check
+		"充值" goto charge
+		"退出" say("再见")
+		"我刚刚说了什么" goto say
+		default goto unknown
+	}
+	say("再见.")
+	exit()
 }
 
-main {
-	print "请问您有什么问题?"
+unknown {
+	say("我不知道应该怎么答复您.")
+	goto(begin)
+}
+
+silence {
+	say("你他妈怎么不说话了?")
+	goto(begin)
+}
+
+hello {
+	say("见到您很高兴，${username}，有什么可以帮到您?")
+	goto(begin)
+}
+
+check {
+	say("您的余额为${balance}")
+	goto(begin)
+}
+
+charge {
+	say("充值的金额为?")
+
+	input(in)
+	add(balance, in)
+
+	say("您已充值${in}元,余额${balance}元.")
+	goto(begin)
 }
