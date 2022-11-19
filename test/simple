@@ -1,7 +1,8 @@
 var (
-	in string
-	username string	
-	balance float64
+	in str
+	username str
+	balance float
+	test integer
 )
 
 begin {
@@ -12,7 +13,7 @@ begin {
 		"你好" goto hello
 		"余额" goto check
 		"充值" goto charge
-		"退出" say("再见")
+		"退出" say("再见, ${username}")
 		"我刚刚说了什么" goto say
 		default goto unknown
 	}
