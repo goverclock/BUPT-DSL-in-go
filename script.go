@@ -7,12 +7,13 @@ import (
 )
 
 type Script struct {
-	rawLines []string
-	symbols map[string]symbolType
-	blocks   map[string]block
+	rawLines  []string
+	symbols   map[string]symbolType
+	blocks    map[string]block
 	variables map[string]variable
+	funcs     map[string]func(*Script, string)
 
-	position      struct {
+	position struct {
 		blockName      string
 		statementIndex int
 	}
@@ -24,7 +25,8 @@ func NewScript(fname string) *Script {
 	obj := new(Script)
 	obj.blocks = make(map[string]block)
 	obj.symbols = make(map[string]symbolType)
-	obj.variables = map[string]variable{}
+	obj.variables = make(map[string]variable)
+	obj.funcs = make(map[string]func(*Script, string))
 
 	f, err := os.Open(fname)
 	if err != nil {
