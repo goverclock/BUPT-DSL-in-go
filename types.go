@@ -38,3 +38,8 @@ type block struct {
 	name string
 	statements []string	
 }
+
+type position struct {
+	blockName string
+	statementIndex int
+}

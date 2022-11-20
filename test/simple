@@ -7,26 +7,18 @@ var (
 
 begin {
 	say("请问您有什么问题?")
-	timeout(10,silence)
 	input(in)
 	switch in {
-		"你好" goto hello
-		"余额" goto check
-		"充值" goto charge
-		"退出" say("再见,${username}")
-		default goto unknown
+		"你好" goto(hello)
+		"余额" goto(check)
+		"充值" goto(charge)
+		"再见" goto(goodbye)
+		default goto(unknown)
 	}
-	say("再见.")
-	exit()
 }
 
 unknown {
 	say("我不知道应该怎么答复您.")
-	goto(begin)
-}
-
-silence {
-	say("你他妈怎么不说话了?")
 	goto(begin)
 }
 
@@ -48,4 +40,8 @@ charge {
 
 	say("您已充值${in}元,余额${balance}元.")
 	goto(begin)
+}
+
+goodbye {
+	say("再见,${username},祝您生活愉快.")
 }

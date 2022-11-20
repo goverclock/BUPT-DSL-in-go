@@ -13,10 +13,7 @@ type Script struct {
 	variables map[string]variable
 	funcs     map[string]func(*Script, string)
 
-	position struct {
-		blockName      string
-		statementIndex int
-	}
+	pos position
 }
 
 // load script from a file
@@ -44,7 +41,7 @@ func NewScript(fname string) *Script {
 	}
 
 	// analysis the script
-	obj.position.blockName = "begin"
+	obj.pos.blockName = "begin"
 	obj.parse()
 
 	return obj

@@ -1,7 +1,6 @@
 package DSL
 
 import (
-	"fmt"
 	"strings"
 )
 
@@ -33,10 +32,9 @@ func (s *Script) parse() {
 		}
 
 		// switches
-		// match in "你好" goto hello
 		if inBlock && !inSwitch && len(words) > 1 && words[0] == "switch" {
 			inSwitch = true
-			switchArgs = append(switchArgs, "match")
+			switchArgs = append(switchArgs, "_match")
 			switchArgs = append(switchArgs, words[1])
 			continue
 		}
@@ -79,14 +77,14 @@ func (s *Script) parse() {
 	// showSymbols(s)
 }
 
-func showSymbols(s *Script) {
-	fmt.Println("Symbols:\n", s.symbols)
-	fmt.Println("Variables:\n", s.variables)
-	fmt.Println("Blocks:")
-	for _, b := range s.blocks {
-		fmt.Println(b.name)
-		for _, sta := range b.statements {
-			fmt.Println(sta)
-		}
-	}
-}
+// func showSymbols(s *Script) {
+// 	fmt.Println("Symbols:\n", s.symbols)
+// 	fmt.Println("Variables:\n", s.variables)
+// 	fmt.Println("Blocks:")
+// 	for _, b := range s.blocks {
+// 		fmt.Println(b.name)
+// 		for _, sta := range b.statements {
+// 			fmt.Println(sta)
+// 		}
+// 	}
+// }
