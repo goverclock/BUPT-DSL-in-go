@@ -1,11 +1,13 @@
 var (
-	in str
-	username str
+	in string
+	username string
 	balance float
-	test integer
+	test int
 )
 
 begin {
+	save(username,"G")
+	save(balance,100.0)
 	say("请问您有什么问题?")
 	input(in)
 	switch in {

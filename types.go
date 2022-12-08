@@ -12,18 +12,18 @@ const (
 
 type varType int
 const (
-	str varType = iota
-	integer 
-	float
+	string_ varType = iota
+	int_
+	float_
 )
 func getVarType(s string) varType {
 	switch s {
-	case "str":
-		return str
-	case "integer":
-		return integer	
+	case "string":
+		return string_
+	case "int":
+		return int_
 	case "float":
-		return float
+		return float_
 	}
 	log.Fatal("no such variable type:", s)
 	return -1

@@ -49,7 +49,7 @@ func (s *Script) parse() {
 				for _, w := range words {
 					sta += "," + w
 				}
-				sta += ")"
+				sta += ")"		// sta == "_match(in,"你好",goto(hello))"
 				bStatements = append(bStatements, sta)
 			}
 		}

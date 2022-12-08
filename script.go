@@ -11,7 +11,7 @@ type Script struct {
 	symbols   map[string]symbolType
 	blocks    map[string]block
 	variables map[string]variable
-	funcs     map[string]func(*Script, string)
+	funcs     map[string]func(*Script, []string)
 
 	pos position
 }
@@ -23,7 +23,7 @@ func NewScript(fname string) *Script {
 	obj.blocks = make(map[string]block)
 	obj.symbols = make(map[string]symbolType)
 	obj.variables = make(map[string]variable)
-	obj.funcs = make(map[string]func(*Script, string))
+	obj.funcs = make(map[string]func(*Script, []string))
 
 	f, err := os.Open(fname)
 	if err != nil {

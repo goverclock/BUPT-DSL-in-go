@@ -13,9 +13,10 @@ func (s *Script) initFuncs() {
 	s.funcs["input"] = input
 	s.funcs["_match"] = _match
 	s.funcs["goto"] = _goto
+	s.funcs["save"] = save
 }
 
-func (s *Script) dispatchFunc(f string, args string) {
+func (s *Script) dispatchFunc(f string, args []string) {
 	if fn, ok := s.funcs[f]; ok {
 		fn(s, args)
 	} else {
@@ -33,13 +34,37 @@ func (s *Script) finish(p position) {
 	}
 }
 
-func parseStatement(s string) (name string, args string) {
+// TODO: return name string, args []string
+func parseStatement(s string) (name string, args []string) {
 	for i, v := range s {
 		if v == '(' {
-			return s[:i], s[i+1 : len(s)-1]
+			arg := s[i+1 : len(s)-1]
+			return s[:i], parseArgs(arg)
 		}
 	}
-	return "", ""
+	return "", nil
+}
+
+func parseArgs(s string) []string {
+	inQuote := false
+	ret := []string{}
+	last := 0
+	for i, v := range s {
+		if v == '"' {
+			inQuote = !inQuote
+		}
+		if inQuote {
+			continue
+		}
+		if v == ',' {
+			ret = append(ret, s[last:i])
+			last = i + 1
+		}
+		if i == len(s)-1 {
+			ret = append(ret, s[last:])
+		}
+	}
+	return ret
 }
 
 func (s *Script) Run() {
@@ -50,7 +75,7 @@ func (s *Script) Run() {
 		curStaInd := s.pos.statementIndex
 		// check end
 		if len(s.blocks[curBlock].statements) == curStaInd {
-			log.Println("finished, quitting")
+			log.Println("script finished, quitting")
 			break
 		}
 
@@ -65,37 +90,42 @@ func (s *Script) Run() {
 
 // ******************** functions ********************** //
 
-func say(s *Script, args string) {
-	args = "客服:" + args[1:len(args)-1] // remove ""
-	fmt.Println(args)
-
+func save(s *Script, args []string) {
+	item := s.variables[args[0]]
+	item.val = args[1]
 	s.finish(position{})
 }
 
-func input(s *Script, args string) {
-	item := s.variables[args]
-	// fmt.Println("before:", item)
+func say(s *Script, args []string) {
+	sentence := "客服:" + args[0][1:len(args[0])-1]
+	fmt.Println(sentence)
+	s.finish(position{})
+}
+
+func input(s *Script, args []string) {
+	item := s.variables[args[0]]
 	reader := bufio.NewReader(os.Stdin)
 	text, _ := reader.ReadString('\n')
 	text = text[:len(text)-1] // remove '\n'
 	item.val = text
-	s.variables[args] = item
-	// fmt.Println("after:", item)
+	s.variables[args[0]] = item
 
 	s.finish(position{})
 }
 
-func _match(s *Script, args string) {
-	as := strings.Split(args, ",")
-	lhv := s.variables[as[0]].val
-	rhv := strings.Clone(as[1])
+func _match(s *Script, args []string) {
+	lhv := s.variables[args[0]].val
+	rhv := strings.Clone(args[1])
+	// if rhv is a string
 	if rhv[0] == '"' && rhv[len(rhv)-1] == '"' {
 		rhv = rhv[1 : len(rhv)-1]
 	}
+
+	// if lhv matches rhv
 	if rhv == "default" || lhv == rhv {
 		t := ""
-		for i := 2; i < len(as); i++ {
-			t += as[i]
+		for i := 2; i < len(args); i++ {
+			t += args[i]
 		}
 		s.dispatchFunc(parseStatement(t))
 	} else {
@@ -103,6 +133,6 @@ func _match(s *Script, args string) {
 	}
 }
 
-func _goto(s *Script, args string) {
-	s.finish(position{args, 0})	
+func _goto(s *Script, args []string) {
+	s.finish(position{args[0], 0})
 }
