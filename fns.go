@@ -16,13 +16,12 @@ func save(s *Script, args []string) {
 	lhv := s.variables[args[0]]
 	rhv := args[1]
 	t, ok := s.variables[rhv]
-	if ok {
+	if ok {	// rhv is a variable
 		rhv = t.val
-		lhv.val = rhv
-	} else if lhv.valType == string_ {
+	} else if lhv.valType == string_ {	// rhv is a string
 		rhv = rhv[1 : len(args[1])-1]
-		lhv.val = rhv
-	}
+	}	// else rhv is a number
+	lhv.val = rhv
 	s.variables[args[0]] = lhv
 	s.finish(position{})
 }
