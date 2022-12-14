@@ -9,15 +9,21 @@ import (
 	"strings"
 )
 
+// system functions
 // implement here and add to executor.go/initFuncs()
 
 func save(s *Script, args []string) {
-	item := s.variables[args[0]]
-	if item.valType == string_ {
-		args[1] = args[1][1 : len(args[1])-1]
+	lhv := s.variables[args[0]]
+	rhv := args[1]
+	t, ok := s.variables[rhv]
+	if ok {
+		rhv = t.val
+		lhv.val = rhv
+	} else if lhv.valType == string_ {
+		rhv = rhv[1 : len(args[1])-1]
+		lhv.val = rhv
 	}
-	item.val = args[1]
-	s.variables[args[0]] = item
+	s.variables[args[0]] = lhv
 	s.finish(position{})
 }
 
@@ -71,7 +77,7 @@ func add(s *Script, args []string) {
 		if err != nil {
 			log.Fatal(err)
 		}
-		item.val = strconv.FormatFloat(lv + rv, 'f', -1, 64)
+		item.val = strconv.FormatFloat(lv+rv, 'f', -1, 64)
 	} else {
 		item.val = lvar.val + rvar.val
 	}

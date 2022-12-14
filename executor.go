@@ -14,6 +14,11 @@ func (s *Script) initFuncs() {
 	s.funcs["add"] = add
 }
 
+func (s *Script) initUserFuncs() {
+	s.funcs["catfact"] = catfact
+	s.funcs["dogfact"] = dogfact
+}
+
 func (s *Script) dispatchFunc(f string, args []string) {
 	if fn, ok := s.funcs[f]; ok {
 		fn(s, args)
@@ -66,6 +71,7 @@ func parseArgs(s string) []string {
 
 func (s *Script) Run() {
 	s.initFuncs()
+	s.initUserFuncs()
 
 	for {
 		curBlock := s.pos.blockName
