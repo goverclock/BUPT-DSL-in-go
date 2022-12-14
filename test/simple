@@ -2,12 +2,15 @@ var (
 	in string
 	username string
 	balance float
-	test int
 )
 
 begin {
 	save(username,"G")
 	save(balance,100.0)
+	goto(menu)
+}
+
+menu {
 	say("请问您有什么问题?")
 	input(in)
 	switch in {
@@ -21,17 +24,17 @@ begin {
 
 unknown {
 	say("我不知道应该怎么答复您.")
-	goto(begin)
+	goto(menu)
 }
 
 hello {
-	say("见到您很高兴，${username}，有什么可以帮到您?")
-	goto(begin)
+	say("见到您很高兴,${username},有什么可以帮到您?")
+	goto(menu)
 }
 
 check {
 	say("您的余额为${balance}")
-	goto(begin)
+	goto(menu)
 }
 
 charge {
@@ -41,7 +44,7 @@ charge {
 	add(balance,in)
 
 	say("您已充值${in}元,余额${balance}元.")
-	goto(begin)
+	goto(menu)
 }
 
 goodbye {

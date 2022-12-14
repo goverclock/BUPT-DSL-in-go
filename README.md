@@ -1,5 +1,13 @@
 # domain-specific-language-in-go
 
+TODO:
+
+- [x] 实现say中变量打印
+
+
+
+
+
 ### 内部数据结构
 
 ##### Symbol
