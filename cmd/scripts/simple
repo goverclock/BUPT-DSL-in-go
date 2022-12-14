@@ -1,0 +1,52 @@
+var (
+	in string
+	username string
+	balance float
+)
+
+begin {
+	save(username,"G")
+	save(balance,100.0)
+	goto(menu)
+}
+
+menu {
+	say("请问您有什么问题?")
+	input(in)
+	switch in {
+		"你好" goto(hello)
+		"余额" goto(check)
+		"充值" goto(charge)
+		"再见" goto(goodbye)
+		default goto(unknown)
+	}
+}
+
+unknown {
+	say("我不知道应该怎么答复您.")
+	goto(menu)
+}
+
+hello {
+	say("见到您很高兴,${username},有什么可以帮到您?")
+	goto(menu)
+}
+
+check {
+	say("您的余额为${balance}")
+	goto(menu)
+}
+
+charge {
+	say("充值的金额为?")
+
+	input(in)
+	add(balance,in)
+
+	say("您已充值${in}元,余额${balance}元.")
+	goto(menu)
+}
+
+goodbye {
+	say("再见,${username},祝您生活愉快.")
+}

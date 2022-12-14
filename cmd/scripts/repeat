@@ -1,0 +1,44 @@
+var (
+    in string
+	botsaid string
+    usersaid string
+    temp string
+)
+
+begin {
+    say("有什么问题?")
+    save(botsaid,"有什么问题?")
+	goto(greet)
+}
+
+greet {
+    input(in)
+    save(usersaid,in)
+    switch in {
+        "你刚刚说了什么?" goto(isaid)
+        "我刚刚说了什么?" goto(usaid)
+        default goto(unknown)
+    }
+}
+
+isaid {
+    save(tmp,"我刚刚说")
+    add(tmp,botsaid)
+    say("${tmp}")
+    save(botsaid,tmp)
+    goto(greet)
+}
+
+usaid {
+    save(tmp,"你刚刚说")
+    add(tmp,usersaid)
+    say("${tmp}")
+    save(botsaid,tmp)
+    goto(greet)
+}
+
+unknown {
+	say("我不知道应该怎么答复您.")
+    save(botsaid,"我不知道应该怎么答复您.")
+	goto(greet)
+}

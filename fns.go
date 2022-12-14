@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-// system functions
+// system functions, DO NOT MODIFY
 // implement here and add to executor.go/initFuncs()
 
 func save(s *Script, args []string) {

@@ -4,8 +4,27 @@ import (
 	"strings"
 )
 
+// load system functions from fns.go
+func (s *Script) initFuncs() {
+	s.funcs["say"] = say
+	s.funcs["input"] = input
+	s.funcs["_match"] = _match
+	s.funcs["goto"] = _goto
+	s.funcs["save"] = save
+	s.funcs["add"] = add
+}
+
+// load user functions from user_fns.go
+func (s *Script) initUserFuncs() {
+	s.funcs["catfact"] = catfact
+	s.funcs["dogfact"] = dogfact
+}
+
 // initialize symbols
 func (s *Script) parse() {
+	s.initFuncs()
+	s.initUserFuncs()
+
 	inVar := false
 	inBlock := false
 	inSwitch := false
@@ -73,18 +92,4 @@ func (s *Script) parse() {
 			}
 		}
 	}
-
-	// showSymbols(s)
 }
-
-// func showSymbols(s *Script) {
-// 	fmt.Println("Symbols:\n", s.symbols)
-// 	fmt.Println("Variables:\n", s.variables)
-// 	fmt.Println("Blocks:")
-// 	for _, b := range s.blocks {
-// 		fmt.Println(b.name)
-// 		for _, sta := range b.statements {
-// 			fmt.Println(sta)
-// 		}
-// 	}
-// }
