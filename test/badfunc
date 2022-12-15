@@ -1,0 +1,3 @@
+begin {
+	badfunc("No such function!")
+}
