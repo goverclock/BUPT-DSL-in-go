@@ -20,6 +20,37 @@ func (s *Script) initUserFuncs() {
 	s.funcs["dogfact"] = dogfact
 }
 
+func parseStatement(s string) (name string, args []string) {
+	for i, v := range s {
+		if v == '(' {
+			arg := s[i+1 : len(s)-1]
+			return s[:i], parseArgs(arg)
+		}
+	}
+	return "", nil
+}
+
+func parseArgs(s string) []string {
+	inQuote := false
+	ret := []string{}
+	last := 0
+	for i, v := range s {
+		if v == '"' {
+			inQuote = !inQuote
+		}
+		if inQuote {
+			continue
+		}
+		if v == ',' {
+			ret = append(ret, s[last:i])
+			last = i + 1
+		}
+		if i == len(s)-1 {
+			ret = append(ret, s[last:])
+		}
+	}
+	return ret
+}
 // analysis the script
 func (s *Script) parse() {
 	s.initFuncs()
