@@ -20,7 +20,7 @@ func (s *Script) initUserFuncs() {
 	s.funcs["dogfact"] = dogfact
 }
 
-// initialize symbols
+// analysis the script
 func (s *Script) parse() {
 	s.initFuncs()
 	s.initUserFuncs()
@@ -46,7 +46,6 @@ func (s *Script) parse() {
 			}
 			vname := words[0]
 			vt := words[1]
-			s.symbols[vname] = varName                        // save symbol
 			s.variables[vname] = variable{"", getVarType(vt)} // save variable
 		}
 

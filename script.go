@@ -6,14 +6,6 @@ import (
 	"os"
 )
 
-type symbolType int
-const (
-	varName symbolType = iota
-	blockName
-	funcName
-	keyword
-)
-
 type varType int
 const (
 	string_ varType = iota
@@ -49,7 +41,6 @@ type position struct {
 }
 type Script struct {
 	rawLines  []string
-	symbols   map[string]symbolType
 	blocks    map[string]block
 	variables map[string]variable
 	funcs     map[string]func(*Script, []string)
@@ -62,7 +53,6 @@ func NewScript(fname string) *Script {
 	// create object
 	obj := new(Script)
 	obj.blocks = make(map[string]block)
-	obj.symbols = make(map[string]symbolType)
 	obj.variables = make(map[string]variable)
 	obj.funcs = make(map[string]func(*Script, []string))
 
